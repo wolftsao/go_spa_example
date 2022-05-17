@@ -2,12 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io/fs"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/wolftsao/go_spa_example/ui"
 )
 
 func main() {
@@ -27,8 +24,7 @@ func routes() http.Handler {
 	mux.HandleFunc("/", indexRoute)
 
 	// static files
-	staticFS, _ := fs.Sub(ui.StaticFiles, "dist")
-	httpFS := http.FileServer(http.FS(staticFS))
+	httpFS := http.FileServer(http.Dir("ui/dist"))
 	mux.Handle("/static/", httpFS)
 
 	// api
@@ -49,13 +45,11 @@ func indexRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.URL.Path == "/favicon.ico" {
-		rawFile, _ := ui.StaticFiles.ReadFile("dist/favicon.ico")
-		w.Write(rawFile)
+		http.ServeFile(w, r, "ui/dist/favicon.ico")
 		return
 	}
 
-	rawFile, _ := ui.StaticFiles.ReadFile("dist/index.html")
-	w.Write(rawFile)
+	http.ServeFile(w, r, "ui/dist/index.html")
 }
 
 func greetingAPI(w http.ResponseWriter, r *http.Request) {
