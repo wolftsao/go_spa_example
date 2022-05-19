@@ -5,6 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    alias: ['/index.html'],
     component: HomeView
   },
   {
