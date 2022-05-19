@@ -10,18 +10,18 @@ import (
 func main() {
 	srv := &http.Server{
 		Addr:        ":8888",
-		Handler:     routes(),
+		Handler:     router(),
 		IdleTimeout: time.Minute,
 	}
 
 	srv.ListenAndServe()
 }
 
-func routes() http.Handler {
+func router() http.Handler {
 	mux := http.NewServeMux()
 
 	// index
-	mux.HandleFunc("/", indexRoute)
+	mux.HandleFunc("/", indexHandler)
 
 	// static files
 	httpFS := http.FileServer(http.Dir("ui/dist"))
@@ -32,7 +32,7 @@ func routes() http.Handler {
 	return mux
 }
 
-func indexRoute(w http.ResponseWriter, r *http.Request) {
+func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Fprintln(w, http.StatusText(http.StatusMethodNotAllowed))
