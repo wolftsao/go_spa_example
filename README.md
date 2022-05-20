@@ -26,7 +26,8 @@ This is a simple project to demo how to serve Vue SPA with Go standard library
     ```
 3. if you like to try docker container, just build docker image then run:
     ```bash
-    # also in project root
+    # make sure frontend has been built (step 1)
+    # execute below in project root
     docker build -t go-spa:demo .
     docker run --rm -p "8888:8888" go-spa:demo
     ```
